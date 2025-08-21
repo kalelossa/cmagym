@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <%- include('../partials/head') %>
+        <!-- Assure-toi que le head contient bien la meta viewport pour un responsive design -->
+    </head>
+    <body>
+        <div class="page-container">
+            <%- include('../partials/header') %>
+            
+            <div class="content-wrapper">
+                <!-- Barre de navigation latérale -->
+                <%- include('../partials/sidebar') %>
+                
+                
+                <div class="main-content">
+                                    <main>
+                    <div class="container">
+                                                <section class="activities-hero">
+                            <div class="activities-hero-content">
+                                <h2 class="activities-hero-title">Toutes nos actualités</h2>
+
+                            </div>
+                        </section>
+                        <div class="news-carousel-container">
+                            <% actualities.slice(0, 3).forEach(act => { console.log(act.image); }); %>
+                            
+                            <div class="news-carousel">
+                                <div class="carousel-track">
+                                    <% actualities.slice(0, 3).forEach((actuality, index) => { %>
+                                        <div class="carousel-slide <%= index === 0 ? 'active' : '' %>" data-index="<%= index %>">
+                                            <div class="carousel-content vertical">
+                                                <div class="carousel-image">
+                                                    <% console.log(`Image ${index}:`, actuality.image); %>
+                                                    <img src="/image/<%= actuality.image %>" alt="<%= actuality.title %>" class="actuality-image">
+                                                </div>
+                                                <div class="carousel-text">
+                                                    <h3><%= actuality.title %></h3>
+                                                    <p class="carousel-description"><%= actuality.description %></p>
+                                                    <div class="carousel-footer">
+                                                        <p class="carousel-date"><%= new Date(actuality.createdAt).toLocaleDateString() %></p>
+                                                        <a href="/actuality/<%= actuality.id %>" class="carousel-button">Lire la suite</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                </div>
+                                
+                                <!-- Navigation du carrousel -->
+                                <button class="carousel-nav carousel-prev" aria-label="Précédent">
+                                    <!-- Remplacer l'icône Font Awesome par une flèche HTML -->
+                                    <span class="nav-arrow">&#10094;</span>
+                                </button>
+                                <button class="carousel-nav carousel-next" aria-label="Suivant">
+                                    <!-- Remplacer l'icône Font Awesome par une flèche HTML -->
+                                    <span class="nav-arrow">&#10095;</span>
+                                </button>
+                                
+                                <!-- Indicateurs de pagination -->
+                                <div class="carousel-indicators">
+                                    <% actualities.slice(0, 3).forEach((actuality, index) => { %>
+                                        <button class="carousel-indicator <%= index === 0 ? 'active' : '' %>" data-index="<%= index %>" aria-label="Slide <%= index + 1 %>"></button>
+                                    <% }); %>
+                                </div>
+                            </div>
+                         </div>
+
+                    </div>
+                </main>
+
+                </div>
+            </div>
+            
+            <%- include('../partials/footer') %>
+        </div>
+        
+        <!-- Intégration du SDK Facebook pour activer le Page Plugin -->
+        <div id="fb-root"></div>
+
+        <script async defer crossorigin="anonymous" 
+            src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v15.0" nonce="xyz">
+            
+        </script>
+    </body>
+</html>
+
+
+

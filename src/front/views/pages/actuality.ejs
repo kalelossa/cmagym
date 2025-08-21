@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <%- include('../partials/head') %>
+<body>
+    <div class="page-container">
+        <%- include('../partials/header') %>
+        
+        <div class="content-wrapper">
+            <!-- Barre de navigation latérale -->
+            <%- include('../partials/sidebar') %>
+            
+            <!-- Contenu principal à droite -->
+            <div class="main-content">
+                <main>
+                    <div class="container">
+                        <!-- Fil d'Ariane -->
+                        <section class="activities-hero">
+                            <div class="activities-hero-content">
+                                <h2 class="activities-hero-title">Toutes nos actualités</h2>
+
+                            </div>
+                        </section>
+                        
+                        <article class="actuality-details">
+                            <div class="actuality-header">
+                                <h1 class="actuality-title"><%= actuality.title %></h1>
+                                 <div class="actuality-meta">
+                                    <span class="actuality-category">Actualité</span>
+                                    <span class="actuality-category"><%= actuality.category ? actuality.category.title : 'Actualité' %></span>
+                                    <span class="actuality-date"><i class="far fa-calendar-alt"></i> <%= new Date(actuality.createdAt).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                                </div>
+                            </div>
+                            
+                            <div class="actuality-hero">
+                                <div class="actuality-image-container">
+                                    <img src="/image/<%= actuality.image %>" alt="<%= actuality.title %>" class="actuality-image">
+                                </div>
+                                <div class="actuality-hero-overlay"></div>
+                            </div>
+                            
+                            <div class="actuality-body">
+                                <div class="actuality-content">
+                                    <p class="actuality-description"><%= actuality.description %></p>
+                                </div>
+                                
+
+                            </div>
+                                                    <% if (actuality.galerie && actuality.galerie.length > 0) { %>
+                            <div class="actuality-gallery">
+                                <h3 class="actuality-gallery-title">Galerie photos</h3>
+                                <div id="galerie-thumbs" class="galerie-thumbs">
+                                    <% actuality.galerie.forEach(function(img, idx) { %>
+                                        <div class="galerie-thumb" data-idx="<%= idx %>">
+                                            <img src="/image/<%= img.image %>" alt="Photo galerie">
+                                        </div>
+                                    <% }); %>
+                                </div>
+                            </div>
+                            <!-- Diaporama modal -->
+                            <div id="galerie-modal" class="galerie-modal">
+                                <span id="galerie-close" class="galerie-close">&times;</span>
+                                <button id="galerie-prev" class="galerie-prev">&#10094;</button>
+                                <div class="galerie-modal-inner">
+                                    <img id="galerie-modal-img" src="" alt="Diaporama">
+                                    <div id="galerie-modal-caption" class="galerie-modal-caption"></div>
+                                </div>
+                                <button id="galerie-next" class="galerie-next">&#10095;</button>
+                            </div>
+                            <script>
+                                // Diaporama JS
+                                const galerieImages = <%- JSON.stringify(actuality.galerie.map(g => ({src: '/image/' + g.image, alt: 'Photo galerie'}))) %>;
+                                const thumbs = document.querySelectorAll('.galerie-thumb');
+                                const modal = document.getElementById('galerie-modal');
+                                const modalImg = document.getElementById('galerie-modal-img');
+                                const modalCaption = document.getElementById('galerie-modal-caption');
+                                const btnClose = document.getElementById('galerie-close');
+                                const btnPrev = document.getElementById('galerie-prev');
+                                const btnNext = document.getElementById('galerie-next');
+                                let currentIdx = 0;
+
+                                function showModal(idx) {
+                                    currentIdx = idx;
+                                    modal.style.display = 'flex';
+                                    modalImg.src = galerieImages[idx].src;
+                                    modalImg.alt = galerieImages[idx].alt;
+                                    modalCaption.textContent = (idx+1) + ' / ' + galerieImages.length;
+                                    document.body.style.overflow = 'hidden';
+                                }
+                                function closeModal() {
+                                    modal.style.display = 'none';
+                                    document.body.style.overflow = '';
+                                }
+                                function showPrev() {
+                                    currentIdx = (currentIdx - 1 + galerieImages.length) % galerieImages.length;
+                                    showModal(currentIdx);
+                                }
+                                function showNext() {
+                                    currentIdx = (currentIdx + 1) % galerieImages.length;
+                                    showModal(currentIdx);
+                                }
+                                thumbs.forEach((thumb, idx) => {
+                                    thumb.addEventListener('click', () => showModal(idx));
+                                });
+                                btnClose.addEventListener('click', closeModal);
+                                btnPrev.addEventListener('click', e => { e.stopPropagation(); showPrev(); });
+                                btnNext.addEventListener('click', e => { e.stopPropagation(); showNext(); });
+                                modal.addEventListener('click', function(e) {
+                                    if (e.target === modal) closeModal();
+                                });
+                                document.addEventListener('keydown', function(e) {
+                                    if (modal.style.display === 'flex') {
+                                        if (e.key === 'ArrowLeft') showPrev();
+                                        if (e.key === 'ArrowRight') showNext();
+                                        if (e.key === 'Escape') closeModal();
+                                    }
+                                });
+                            </script>
+                        <% } %>
+                                                        <div class="actuality-footer">
+                                    <div class="back-button">
+                                        <a href="/actualities"><i class="fas fa-chevron-left"></i> Retour aux actualités</a>
+                                    </div>
+
+                                    <div class="actuality-actions">
+                                        <% if (admin) { %>  <!-- Si admin est défini (connecté) -->
+                                        <a href="/modifForm?id=<%= actuality.id %>" class="btn-edit" style="margin-right:10px;">
+                                            <i class="fas fa-edit"></i> Modifier
+                                        </a>
+                                        <form action="/actualities/delete/<%= actuality.id %>" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn-delete" onclick="return confirm('Voulez-vous vraiment supprimer cette actualité ?');">
+                                            <i class="fas fa-trash"></i> Supprimer
+                                            </button>
+                                        </form>
+                                        <% } %>
+                                        </div>
+                                </div>
+                        </article>
+
+
+                        
+                        <!-- Section des actualités connexes -->
+                        <div class="related-news">
+                            <h2 class="section-title">Autres actualités qui pourraient vous intéresser</h2>
+                            <div class="related-news-grid">
+                                <% if (sameCategoryActualities && sameCategoryActualities.length > 0) { %>
+                                    <% sameCategoryActualities.forEach(function(item) { %>
+                                        <% if (item.id !== actuality.id) { %>
+                                        <div class="related-news-item">
+                                            <a href="/actuality/<%= item.id %>" class="related-news-link">
+                                                <div class="related-news-image-container">
+                                                    <img src="/image/<%= item.image %>" alt="<%= item.title %>" class="related-news-image">
+                                                </div>
+                                                <h3 class="related-news-title"><%= item.title %></h3>
+                                            </a>
+                                        </div>
+                                        <% } %>
+                                    <% }); %>
+                                <% } else { %>
+                                    <p>Aucune autre actualité dans cette catégorie.</p>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <script>
+                        // Log côté client pour voir ce que tu reçois dans la vue
+                        console.log('actuality:', <%- JSON.stringify(actuality) %>);
+                        console.log('relatedActualities:', <%- JSON.stringify(relatedActualities) %>);
+                        console.log('sameCategoryActualities:', <%- JSON.stringify(sameCategoryActualities) %>);
+                    </script>
+                </main>
+            </div>
+        </div>
+        
+        <%- include('../partials/footer') %>
+    </div>
+</body>
+</html>

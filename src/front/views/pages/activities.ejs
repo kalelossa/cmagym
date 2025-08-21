@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <%- include('../partials/head') %>
+<body>
+    <div class="page-container">
+        <%- include('../partials/header') %>
+        <div class="content-wrapper">
+            <%- include('../partials/sidebar') %>
+            <div class="main-content">
+                <main>
+                    <div class="container">
+                        <!-- Hero section -->
+                        <section class="activities-hero">
+                            <div class="activities-hero-content">
+                                <h2 class="activities-hero-title">Nos activités sportives</h2>
+                                <p class="activities-hero-desc">
+                                    Découvrez une sélection d'activités adaptées à tous les âges et tous les niveaux, encadrées par nos coachs passionnés.
+                                </p>
+                            </div>
+                        </section>
+                        <!-- Filtres -->
+
+                        <!-- Grille d'activités -->
+                        <section class="activities-grid">
+                            <% if (activities && activities.length > 0) { %>
+                                <% activities.forEach((activity, index) => { %>
+                                    <article class="activity-card" data-public="<%= activity.public %>" data-index="<%= index %>">
+                                        <header class="activity-header" style="background: linear-gradient(120deg, #0c0faf, #ff7e5f);">
+                                            <div class="activity-header-main">
+                                                <h3 class="activity-title"><%= activity.groupe %></h3>
+                                                <span class="activity-tag"><%= activity.public %></span>
+                                            </div>
+                                        </header>
+                                        <div class="activity-body">
+                                            <p class="activity-description"><%= activity.description %></p>
+                                            <ul class="activity-infos">
+                                                <li>
+                                                    <i class="fas fa-clock"></i>
+                                                    <span><strong>Horaires :</strong> <%= activity.horraire %></span>
+                                                </li>
+                                                <% if(activity.frequence) { %>
+                                                <li>
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span><strong>Fréquence :</strong> <%= activity.frequence %></span>
+                                                </li>
+                                                <% } %>
+                                                <li>
+                                                    <i class="fas fa-tag"></i>
+                                                    <span><strong>Cotisation :</strong> <%= activity.cotisation %></span>
+                                                </li>
+                                            </ul>
+                                            <a href="contact" class="activity-btn">Plus d'informations</a>
+                                        </div>
+                                    </article>
+                                <% }); %>
+                            <% } else { %>
+                                <div class="no-activities">
+                                    <i class="fas fa-running fa-3x"></i>
+                                    <p>Aucune activité disponible pour le moment.</p>
+                                    <p>Revenez bientôt pour découvrir nos nouveaux cours!</p>
+                                </div>
+                            <% } %>
+                        </section>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <%- include('../partials/footer') %>
+    </div>
+    <!-- Aucun script JS -->
+</body>
+</html>

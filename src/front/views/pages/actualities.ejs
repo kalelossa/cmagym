@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <%- include('../partials/head') %>
+<body>
+    <div class="page-container">
+        <%- include('../partials/header') %>
+        
+        <div class="content-wrapper">
+            <!-- Barre de navigation latérale -->
+            <%- include('../partials/sidebar') %>
+            
+            <!-- Contenu principal à droite -->
+            <div class="main-content">
+                <main>
+                    <div class="container">
+                        <!-- En-tête de la section actualités -->
+                         <section class="activities-hero">
+                            <div class="activities-hero-content">
+                                <h2 class="activities-hero-title">Toutes nos actualités</h2>
+                                <p class="activities-hero-desc">
+                                    Restez informé des dernières nouvelles, événements et mises à jour de notre établissement pour ne manquer aucune information importante.
+                                </p>
+                            </div>
+                        </section>
+                        
+                        <!-- Filtre par catégories -->
+                        <div class="categories-filter">
+                            <a href="/actualities"<% if (!selectedCategory) { %> class="tag active"<% } else { %> class="tag"<% } %>>Toutes</a>
+                            <% categories.forEach(category => { %>
+                                <a href="/actualities?category=<%= category.id %>" 
+                                   class="tag<%= selectedCategory == category.id ? ' active' : '' %>">
+                                    <%= category.title %>
+                                </a>
+                            <% }); %>
+                        </div>
+
+                        <!-- Grille des actualités -->
+                        <div class="actualities-grid">
+                            <% actualities.forEach(actuality => { %>
+                                <div class="actuality-card">
+                                    <a href="/actuality/<%= actuality.id %>" class="actuality-link">
+                                        <div class="actuality-image-wrapper">
+                                            <img src="/image/<%= actuality.image %>" alt="<%= actuality.title %>" class="actuality-image">
+                                            <div class="actuality-date-badge">
+                                                <span class="day"><%= new Date(actuality.createdAt).getDate() %></span>
+                                                <span class="month"><%= new Date(actuality.createdAt).toLocaleString('fr-FR', { month: 'short' }) %></span>
+                                            </div>
+                                        </div>
+                                        <div class="actuality-content">
+                                            <h2 class="actuality-title"><%= actuality.title %></h2>
+                                            <p class="actuality-excerpt"><%= actuality.description.substring(0, 120) %>...</p>
+                                            <div class="actuality-footer">
+                                                <span class="read-more">Lire la suite <i class="fas fa-arrow-right"></i></span>
+                                                <span class="category-tag"><%= actuality.category ? actuality.category.title : '' %></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            <% }); %>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="pagination">
+                            <% for (let i = 1; i <= totalPages; i++) { %>
+                                <% if (i === currentPage) { %>
+                                    <span class="page-link active"><%= i %></span>
+                                <% } else { %>
+                                    <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+                                <% } %>
+                            <% } %>
+                        </div>
+
+                    </div>
+                </main>
+            </div>
+        </div>
+        
+        <%- include('../partials/footer') %>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterTags = document.querySelectorAll('.tag');
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', function () {
+                    filterTags.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    // Ajoute ici ta logique de filtrage si besoin
+                });
+            });
+        });
+    </script>
+</body>
+</html>

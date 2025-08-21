@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <%- include('../partials/head') %>
+<body>
+    <div class="page-container">
+        <%- include('../partials/header') %>
+        
+        <div class="content-wrapper">
+            <!-- Barre de navigation latérale -->
+            <%- include('../partials/sidebar') %>
+            
+            <!-- Contenu principal à droite -->
+            <div class="main-content">
+                <main>
+                    <div class="container">
+                        <!-- Introduction à l'équipe -->
+                                                 <section class="activities-hero">
+                            <div class="activities-hero-content">
+                                <h2 class="activities-hero-title">Notres équipes</h2>
+                                <p class="activities-hero-desc">
+                                    Découvrez notre équipe passionnée et dévouée qui s'engage chaque jour pour vous accompagner dans vos objectifs sportifs et votre bien-être.
+                                </p>
+                            </div>
+                        </section>
+                        
+                     
+
+                        
+                        <% if (typeof employee !== 'undefined' && employee.length > 0) { %>
+                            <!-- Section Administration -->
+                            <div class="team-section administration-section">
+                                <h3 class="section-heading">Administration</h3>
+                                <div class="team-grid">
+                                    <% 
+                                    const adminMembers = employee.filter(member => 
+                                        member.role && member.role.toLowerCase().includes('admin')
+                                    );
+                                    if (adminMembers.length > 0) { 
+                                        adminMembers.forEach(function(teamx) { %>
+                                            <div class="team-member-container" data-category="administration">
+
+                                                    <div class="member-card">
+                                                        <div class="member-image-container">
+                                                            <img src="/image/<%= teamx.image %>" alt="<%= teamx.title %>" class="member-image">
+                                                        </div>
+                                                        <div class="member-info">
+                                                            <h4 class="member-name"><%= teamx.title %></h4>
+                                                            <p class="member-role"><%= teamx.role || 'Administration' %></p>
+                                                            <p class="member-description"><%= teamx.description.substring(0, 80) %>...</p>
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                <div class="member-social">
+                                                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                                                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                                                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                                                </div>
+                                            </div>
+                                        <% }); 
+                                    } else { %>
+                                        <p class="no-members">Aucun membre dans l'administration pour le moment.</p>
+                                    <% } %>
+                                </div>
+                            </div>
+                            
+                            <!-- Section Coachs -->
+                            <div class="team-section coach-section">
+                                <h3 class="section-heading">Coachs Sportifs</h3>
+                                <div class="team-grid">
+                                    <% 
+                                    const coachMembers = employee.filter(member => 
+                                        member.role && member.role.toLowerCase().includes('coach')
+                                    );
+                                    if (coachMembers.length > 0) { 
+                                        coachMembers.forEach(function(teamx) { %>
+                                            <div class="team-member-container" data-category="coach">
+
+                                                    <div class="member-card">
+                                                        <div class="member-image-container">
+                                                            <img src="/image/<%= teamx.image %>" alt="<%= teamx.title %>" class="member-image">
+                                                        </div>
+                                                        <div class="member-info">
+                                                            <h4 class="member-name"><%= teamx.title %></h4>
+                                                            <p class="member-role"><%= teamx.role || 'Coach sportif' %></p>
+                                                            <p class="member-description"><%= teamx.description.substring(0, 80) %>...</p>
+                                                            
+                                                        </div>
+                                                    </div>
+                                               
+                                                <div class="member-social">
+                                                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                                                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                                                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                                                </div>
+                                            </div>
+                                        <% }); 
+                                    } else { %>
+                                        <p class="no-members">Aucun coach sportif pour le moment.</p>
+                                    <% } %>
+                                </div>
+                            </div>
+                            
+                            <!-- Section Bénévoles -->
+                            <div class="team-section benevole-section">
+                                <h3 class="section-heading">Bénévoles</h3>
+                                <div class="team-grid">
+                                    <% 
+                                    const benevoleMembers = employee.filter(member => 
+                                        member.role && member.role.toLowerCase().includes('benevole')
+                                    );
+                                    if (benevoleMembers.length > 0) { 
+                                        benevoleMembers.forEach(function(teamx) { %>
+                                            <div class="team-member-container" data-category="benevole">
+                                                
+                                                    <div class="member-card">
+                                                        <div class="member-image-container">
+                                                            <img src="/image/<%= teamx.image %>" alt="<%= teamx.title %>" class="member-image">
+                                                        </div>
+                                                        <div class="member-info">
+                                                            <h4 class="member-name"><%= teamx.title %></h4>
+                                                            <p class="member-role"><%= teamx.role || 'Bénévole' %></p>
+                                                            <p class="member-description"><%= teamx.description.substring(0, 80) %>...</p>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                
+                                                <div class="member-social">
+                                                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                                                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                                                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                                                </div>
+                                            </div>
+                                        <% }); 
+                                    } else { %>
+                                        <p class="no-members">Aucun bénévole pour le moment.</p>
+                                    <% } %>
+                                </div>
+                            </div>
+                            
+                        <% } else { %>
+                            <p>Aucun membre dans l'équipe pour le moment.</p>
+                        <% } %>
+                    </div>
+                </main>
+            </div>
+        </div>
+        
+        <%- include('../partials/footer') %>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filtrage des membres de l'équipe
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const teamSections = document.querySelectorAll('.team-section');
+            const teamMembers = document.querySelectorAll('.team-member-container');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Activer/désactiver les boutons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    if (filter === 'all') {
+                        // Afficher toutes les sections
+                        teamSections.forEach(section => section.style.display = 'block');
+                        teamMembers.forEach(member => member.style.display = 'block');
+                    } else {
+                        // Afficher uniquement la section correspondante
+                        teamSections.forEach(section => {
+                            if (section.classList.contains(filter + '-section')) {
+                                section.style.display = 'block';
+                            } else {
+                                section.style.display = 'none';
+                            }
+                        });
+                        
+                        // Filtrer les membres
+                        teamMembers.forEach(member => {
+                            if (member.getAttribute('data-category') === filter) {
+                                member.style.display = 'block';
+                            } else {
+                                member.style.display = 'none';
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <% console.log('employee', employee); %>
+</body>
+</html>
